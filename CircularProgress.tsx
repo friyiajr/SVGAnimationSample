@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {View, StyleSheet, Button} from 'react-native';
 import Animated, {
   useAnimatedProps,
+  useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withTiming,
@@ -27,7 +28,7 @@ export const CircularProgress: FC<CircularProgressProps> = ({
   const circumfrence = 2 * Math.PI * innerRadius;
   const invertedCompletion = (100 - percentageComplete) / 100;
 
-  const theta = useSharedValue(2 * Math.PI);
+  const theta = useSharedValue(2 * Math.PI * 1.001);
   const animateTo = useDerivedValue(() => 2 * Math.PI * invertedCompletion);
   const textOpacity = useSharedValue(0);
 
@@ -41,7 +42,7 @@ export const CircularProgress: FC<CircularProgressProps> = ({
     };
   });
 
-  const powerTextStyle = useAnimatedProps(() => {
+  const powerTextStyle = useAnimatedStyle(() => {
     return {
       opacity: withTiming(textOpacity.value, {
         duration: FADE_DELAY,
@@ -49,7 +50,7 @@ export const CircularProgress: FC<CircularProgressProps> = ({
     };
   });
 
-  const powerPercentTextStyle = useAnimatedProps(() => {
+  const powerPercentTextStyle = useAnimatedStyle(() => {
     return {
       opacity: withTiming(textOpacity.value, {
         duration: FADE_DELAY,
@@ -85,7 +86,7 @@ export const CircularProgress: FC<CircularProgressProps> = ({
             theta.value = animateTo.value;
             textOpacity.value = 1;
           } else {
-            theta.value = 2 * Math.PI;
+            theta.value = 2 * Math.PI * 1.001;
             textOpacity.value = 0;
           }
         }}
